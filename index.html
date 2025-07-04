@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Emoji Mood Tracker</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="container">
+    <h1>How are you feeling today?</h1>
+
+    <div class="emoji-list">
+      <button class="emoji">😀</button>
+      <button class="emoji">😐</button>
+      <button class="emoji">😢</button>
+      <button class="emoji">😠</button>
+      <button class="emoji">🥳</button>
+    </div>
+
+    <div class="actions">
+      <button id="saveMoodBtn">💾 Save Current Mood</button>
+      <button id="clearHistoryBtn">🗑️ Clear History</button>
+    </div>
+
+    <div id="savedMoodContainer">
+      <h2>💾 Saved Mood</h2>
+      <p id="savedMood">None</p>
+    </div>
+
+    <h2>📅 Your Mood History</h2>
+    <ul id="mood-history"></ul>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
