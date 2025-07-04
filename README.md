@@ -1,3 +1,7 @@
+![image](https://github.com/muqadasurooj17/emogydectecter/blob/main/mood%20dectector.png)
+
+
+
 # 😀 Emoji Mood Tracker
 
 A fun and simple web app that lets you track your mood using emojis!  
