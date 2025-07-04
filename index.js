@@ -1,3 +1,4 @@
+// DOM Elements
 const emojis = document.querySelectorAll('.emoji');
 const moodHistory = document.getElementById('mood-history');
 const clearHistoryBtn = document.getElementById('clearHistoryBtn');
@@ -6,9 +7,19 @@ const savedMoodDisplay = document.getElementById('savedMood');
 
 let lastSelectedMood = null;
 
+// Utility function to get data from localStorage
+const getLocalStorageData = (key, defaultValue = []) => {
+  return JSON.parse(localStorage.getItem(key)) || defaultValue;
+};
+
+// Utility function to set data in localStorage
+const setLocalStorageData = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
 // Load saved moods on page load
 window.onload = () => {
-  const savedMoods = JSON.parse(localStorage.getItem('moodTracker')) || [];
+  const savedMoods = getLocalStorageData('moodTracker');
   const savedMood = localStorage.getItem('savedMood');
 
   renderMoods(savedMoods);
@@ -19,45 +30,54 @@ window.onload = () => {
 };
 
 // Handle emoji click
-emojis.forEach(emoji => {
-  emoji.addEventListener('click', () => {
-    const mood = emoji.textContent;
-    const time = new Date().toLocaleString();
-    const moodEntry = { mood, time };
+const handleEmojiClick = (emoji) => {
+  const mood = emoji.textContent;
+  const time = new Date().toLocaleString();
+  const moodEntry = { mood, time };
 
-    lastSelectedMood = mood;
+  lastSelectedMood = mood;
 
-    let savedMoods = JSON.parse(localStorage.getItem('moodTracker')) || [];
-    savedMoods.unshift(moodEntry);
-    localStorage.setItem('moodTracker', JSON.stringify(savedMoods));
+  const savedMoods = getLocalStorageData('moodTracker');
+  savedMoods.unshift(moodEntry);
+  setLocalStorageData('moodTracker', savedMoods);
 
-    renderMoods(savedMoods);
-  });
+  renderMoods(savedMoods);
+};
+
+// Attach click event listeners to emojis
+emojis.forEach((emoji) => {
+  emoji.addEventListener('click', () => handleEmojiClick(emoji));
 });
 
 // Save current mood
-saveMoodBtn.addEventListener('click', () => {
+const saveCurrentMood = () => {
   if (lastSelectedMood) {
     localStorage.setItem('savedMood', lastSelectedMood);
     savedMoodDisplay.textContent = lastSelectedMood;
-    alert("Mood saved!");
+    alert('Mood saved!');
   } else {
-    alert("Please select a mood first!");
+    alert('Please select a mood first!');
   }
-});
+};
 
-// Clear history
-clearHistoryBtn.addEventListener('click', () => {
+// Attach click event listener to save button
+saveMoodBtn.addEventListener('click', saveCurrentMood);
+
+// Clear mood history
+const clearMoodHistory = () => {
   localStorage.removeItem('moodTracker');
   moodHistory.innerHTML = '';
-});
+};
+
+// Attach click event listener to clear history button
+clearHistoryBtn.addEventListener('click', clearMoodHistory);
 
 // Render mood history
-function renderMoods(moods) {
+const renderMoods = (moods) => {
   moodHistory.innerHTML = '';
-  moods.slice(0, 10).forEach(entry => {
+  moods.slice(0, 10).forEach((entry) => {
     const li = document.createElement('li');
     li.textContent = `${entry.mood} - ${entry.time}`;
     moodHistory.appendChild(li);
   });
-}
+};
